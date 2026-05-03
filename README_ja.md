@@ -30,6 +30,8 @@ HTMLを画像に変換
   - omit_background (bool, optional): デフォルトの白い背景を非表示にするかどうか。これにより透明なスクリーンショットが可能になります（PNG形式のみ）。
   - full_page (bool, optional): ビューポートサイズだけでなく、ページ全体をキャプチャするかどうか、デフォルトはTrue。
   - clip (FloatRect, optional): スクリーンショット後にクリップする領域、xyは開始点です。
+  - selector (str, optional): スクリーンショットする要素を指定するCSSセレクタ。指定された場合、マッチした要素の領域のみがキャプチャされます。要素がマッチしない場合またはバウンディングボックスの取得に失敗した場合は、通常のスクリーンショットが行われます。
+  - selector_padding (int, optional): 選択した要素の周りのパディング（ピクセル単位）、デフォルトは0。selectorが指定されている場合のみ有効です。
   - animations: (Literal["allow", "disabled"], optional): CSSアニメーションを許可するかどうか。
   - caret: (Literal["hide", "initial"], optional): `hide`に設定すると、スクリーンショット時にテキストキャレットが非表示になります。デフォルトは`hide`。
   - scale: (Literal["css", "device"], optional): ページのスケール設定。`css`に設定すると、デバイス解像度とCSSピクセルが1:1で対応し、高解像度画面ではスクリーンショットが小さくなります。`device`に設定すると、デバイスの画面スケール設定または現在のPlaywright Page/Contextのdevice_scale_factorパラメータに従ってスケールされます。

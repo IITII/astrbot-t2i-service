@@ -30,6 +30,8 @@ html 转 img
   - omit_background (bool, optional): 是否允许隐藏默认的白色背景，这样就可以截透明图了，仅适用于 PNG 格式
   - full_page (bool, optional): 是否截整个页面而不是仅设置的视口大小，默认为 True.
   - clip (FloatRect, optional): 截图后裁切的区域，xy为起点.
+  - selector (str, optional): CSS 选择器，用于指定要截图的元素。如果指定，将只截图该元素所在的区域。若选择器未匹配任何元素或获取 bounding box 失败，则按正常方式截图。
+  - selector_padding (int, optional): 选择器匹配元素周围的 padding（像素），默认为 0。当指定了 selector 时有效。
   - animations: (Literal["allow", "disabled"], optional): 是否允许播放 CSS 动画.
   - caret: (Literal["hide", "initial"], optional): 当设置为 `hide` 时，截图时将隐藏文本插入符号，默认为 `hide`.
   - scale: (Literal["css", "device"], optional): 页面缩放设置. 当设置为 `css` 时，则将设备分辨率与 CSS 中的像素一一对应，在高分屏上会使得截图变小. 当设置为 `device` 时，则根据设备的屏幕缩放设置或当前 Playwright 的 Page/Context 中的 device_scale_factor 参数来缩放.

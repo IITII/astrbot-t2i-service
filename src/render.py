@@ -37,6 +37,8 @@ class ScreenshotOptions(BaseModel):
             当设置为 `css` 时，则将设备分辨率与 CSS 中的像素一一对应，在高分屏上会使得截图变小.
             当设置为 `device` 时，则根据设备的屏幕缩放设置或当前 Playwright 的 Page/Context 中的
             device_scale_factor 参数来缩放.
+        selector: (str, optional): CSS 选择器，用于指定要截图的元素。如果指定，将只截图该元素所在的区域。
+        selector_padding: (int, optional): 选择器匹配元素周围的 padding（像素），默认为 0。
         viewport_width: (int, optional): 自定义视口宽度，用于控制截图宽度.
         device_scale_factor_level: (Literal["normal", "high", "ultra"], optional): 设备像素比等级.
             - normal: 1.0
@@ -55,6 +57,8 @@ class ScreenshotOptions(BaseModel):
     animations: Literal["allow", "disabled", None] = None
     caret: Literal["hide", "initial", None] = None
     scale: Literal["css", "device", None] = None
+    selector: str | None = None
+    selector_padding: int = 0
     viewport_width: int | None = None
     device_scale_factor_level: Literal["normal", "high", "ultra", None] = None
 
@@ -223,6 +227,46 @@ class Text2ImgRender:
             screenshot_kwargs = screenshot_options.model_dump(exclude_none=True)
             screenshot_kwargs.pop("viewport_width", None)
             screenshot_kwargs.pop("device_scale_factor_level", None)
+            screenshot_kwargs.pop("selector", None)
+            screenshot_kwargs.pop("selector_padding", None)
+
+            # Handle CSS selector to automatically set clip region
+            if screenshot_options.selector:
+                try:
+                    locator = page.locator(screenshot_options.selector)
+                    # Check if element exists
+                    count = await locator.count()
+                    if count == 0:
+                        logger.warning(
+                            f"html2pic: CSS selector '{screenshot_options.selector}' matched no elements"
+                        )
+                    else:
+                        # Get bounding box of the first matched element
+                        bounding_box = await locator.first.bounding_box()
+                        if bounding_box:
+                            # Apply padding to bounding box
+                            padding = float(screenshot_options.selector_padding)
+                            clip_rect: FloatRect = {
+                                "x": max(0.0, bounding_box["x"] - padding),
+                                "y": max(0.0, bounding_box["y"] - padding),
+                                "width": bounding_box["width"] + 2 * padding,
+                                "height": bounding_box["height"] + 2 * padding,
+                            }
+                            screenshot_kwargs["clip"] = clip_rect
+                            logger.info(
+                                f"html2pic: Using selector '{screenshot_options.selector}' "
+                                f"with clip region {clip_rect}"
+                            )
+                        else:
+                            logger.warning(
+                                f"html2pic: Failed to get bounding box for selector "
+                                f"'{screenshot_options.selector}'"
+                            )
+                except Exception as e:
+                    logger.warning(
+                        f"html2pic: Error processing CSS selector "
+                        f"'{screenshot_options.selector}': {e}"
+                    )
 
             # Robustness: Remove quality if type is png, as Playwright errors out
             if screenshot_options.type == "png":

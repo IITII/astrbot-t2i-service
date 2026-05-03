@@ -30,6 +30,8 @@ Convert HTML to image
   - omit_background (bool, optional): Whether to hide the default white background, allowing transparent screenshots (PNG only).
   - full_page (bool, optional): Whether to capture the entire page instead of just the viewport, default is True.
   - clip (FloatRect, optional): Area to clip after screenshot, xy is the starting point.
+  - selector (str, optional): CSS selector to specify which element to screenshot. If specified, only the area of the matched element will be captured. If no element matches or bounding box retrieval fails, normal screenshot will be taken.
+  - selector_padding (int, optional): Padding around the selected element in pixels, default is 0. Only effective when selector is specified.
   - animations: (Literal["allow", "disabled"], optional): Whether to allow CSS animations.
   - caret: (Literal["hide", "initial"], optional): When set to `hide`, the text caret will be hidden during screenshot, default is `hide`.
   - scale: (Literal["css", "device"], optional): Page scaling settings. When set to `css`, device resolution maps 1:1 with CSS pixels, making screenshots smaller on high-DPI screens. When set to `device`, scales according to device screen scaling or the device_scale_factor parameter in the current Playwright Page/Context.
