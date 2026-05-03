@@ -29,4 +29,4 @@ jobs:
     - name: Create Buildx
       run: docker buildx create --name mybuilder --use
     - name: Build
-      run: docker buildx build --platform linux/arm64,linux/amd64 -t soulter/astrbot-t2i-service:latest . --push
+      run: docker buildx build --platform linux/arm64,linux/amd64 -t sikii/astrbot-t2i-service:latest . --push
