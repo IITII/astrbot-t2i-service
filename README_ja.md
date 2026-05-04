@@ -40,7 +40,7 @@ HTMLを画像に変換
 |   - viewport_height (int, optional): スクリーンショットの高さを制御するカスタムビューポート高さ。優先順位順：
 |     1. リクエストオプションで明示的に指定
 |     2. HTMLの`<meta name="viewport" content="height=...">` から自動解析
-|     3. 指定されていない場合、デフォルトは600px
+|     3. 指定されていない場合、デフォルトは720px
 |   - device_scale_factor_level (Literal["normal", "high", "ultra"], optional): デバイスピクセル比レベル、デフォルトは"normal"。異なるレベルは独立したブラウザコンテキストプールを使用し、より良いパフォーマンスとリソース分離を提供します。
 |     - `normal`: デバイスピクセル比 1.0（デフォルト）
 |     - `high`: デバイスピクセル比 1.3

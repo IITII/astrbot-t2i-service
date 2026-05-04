@@ -40,7 +40,7 @@ html 转 img
 |   - viewport_height (int, optional): 自定义视口高度，用于控制截图高度. 优先级顺序：
 |     1. 在请求 options 中显式指定
 |     2. 从 HTML 的 `<meta name="viewport" content="height=...">` 自动解析
-|     3. 未指定时默认为 600px
+|     3. 未指定时默认为 720px
 |   - device_scale_factor_level (Literal["normal", "high", "ultra"], optional): 设备像素比等级，默认为 "normal". 不同等级使用独立的浏览器上下文池，提供更好的性能和资源隔离.
 |     - `normal`: 设备像素比 1.0（默认）
 |     - `high`: 设备像素比 1.3
